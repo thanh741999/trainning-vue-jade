@@ -1,16 +1,37 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Header/>
     <router-view/>
   </div>
 </template>
 
+<script>
+import Header from '@/layout/Header'
+export default {
+  name: 'app',
+  components: {
+    Header
+  }
+}
+</script>
 <style lang="scss">
+
+body {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  bottom: 0;
+}
+p,h1,h2,h3,h4,ul,li {
+  margin: 0;
+  padding: 0;
+}
+button {
+  background-color: unset;
+  border: none;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif,Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -29,4 +50,5 @@
     }
   }
 }
+@import'~bootstrap/dist/css/bootstrap.css';
 </style>
