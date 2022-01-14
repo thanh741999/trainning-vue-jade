@@ -1,24 +1,22 @@
 <template>
   <div class="home">
     <Banner :data="bannerData"/>
+    <Category @scrollToElement="scrollToElement"/>
     <BuyMedicineOnline/>
-    <HelloWorld/>
-    <HelloWorld></HelloWorld>
-    <HelloWorld></HelloWorld>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld'
 import Banner from '@/views/home_components/Banner'
 import BuyMedicineOnline from '@/views/home_components/BuyMedicineOnline'
+import Category from '@/views/home_components/Category_thumb'
 import { GetBanner } from '@/service/banner.service'
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
     Banner,
+    Category,
     BuyMedicineOnline
   },
   data () {
@@ -36,8 +34,20 @@ export default {
   },
   created () {
     this.bannerData = this.$route.meta.data
+  },
+  methods: {
+    scrollToElement (e) {
+      const eleHeight = this.$refs[e]
+      const top = eleHeight.offsetTop - 80
+      console.log(eleHeight)
+      console.log(top)
+      console.log(e)
+      window.scrollTo({
+        top: top,
+        behavior: 'smooth'
+      })
+    }
   }
-
 }
 </script>
 <style scoped lang="scss">

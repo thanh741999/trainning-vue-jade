@@ -79,7 +79,6 @@ export default {
 
       .item {
         border-radius: 25px;
-
         img {
           width: 850px;
           height: 300px;
@@ -122,11 +121,18 @@ export default {
 
         p {
           margin-bottom: 0;
+          font-size: 15px;
+          @media screen and (max-width: 768px) {
+            font-size: 13px;
+          }
         }
       ;
 
         img {
           margin-bottom: 15px;
+          @media screen and (max-width: 768px) {
+            margin-bottom: 10px;
+          }
         }
       }
     }
