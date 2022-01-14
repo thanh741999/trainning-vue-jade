@@ -203,7 +203,6 @@ export default {
       const scrolltop = document.documentElement.scrollTop
       const headerheight = this.$refs.header.clientHeight
       const headerwidth = this.$refs.header.clientWidth
-      console.log(scrolltop)
       if (scrolltop >= headerheight && headerwidth >= 767) {
         document.getElementsByClassName('header--scroll')[0].style.display = 'block'
       } else {
@@ -211,7 +210,6 @@ export default {
       }
     },
     ToggleSidebar () {
-      console.log(this.$refs.navbar)
       this.$refs.navbar.classList.toggle('toggle-nav')
     }
   }
@@ -224,6 +222,7 @@ export default {
 .header {
   background-color: #01ADAB;
   padding: 10px 0;
+  margin-bottom: 20px;
   @media screen and (max-width: 765px) {
     position: fixed;
     top: 0;
