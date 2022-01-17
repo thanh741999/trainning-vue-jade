@@ -58,7 +58,7 @@ export default {
     padding-top: 30px;
     padding-bottom: 36.8px;
     @media screen and (max-width: 500px) {
-      padding-bottom: 20px;
+      padding-bottom: 0;
     }
     .content__item {
       padding: 20px;
@@ -71,6 +71,7 @@ export default {
         width: 100%;
         border-bottom: 2px solid #E5E5E4;
         margin-bottom: 15px;
+        padding: 15px 0;
         &:last-child {
           border-bottom: none;
         }

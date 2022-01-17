@@ -89,8 +89,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 15px 33.5px;
-    @media screen and (max-width: 375px) {
-      padding: 15px 20px;
+    @media screen and (max-width: 768px) {
+      padding: 15px;
     }
 
     .header__title {

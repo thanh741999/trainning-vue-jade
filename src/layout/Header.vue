@@ -228,6 +228,7 @@ export default {
     top: 0;
     width: 100%;
     z-index: 9;
+    padding: 0;
   }
   &-main {
     display: block;
@@ -239,6 +240,7 @@ export default {
     display: none;
     @media screen and (max-width: 500px) {
       display: block;
+      padding: 12px 10px;
     }
   }
   &__top {
@@ -368,6 +370,7 @@ export default {
       align-items: flex-start;
       justify-content: space-between;
       padding: 0;
+      margin-bottom: 0;
       @media screen and (max-width: 768px) {
         flex-wrap: wrap;
         justify-content: center;

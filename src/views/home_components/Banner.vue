@@ -33,7 +33,7 @@
 
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
-import { GetBanner } from '@/service/HomeService/home.service'
+import { GetBanner } from '@/service/home.service'
 
 export default {
   name: 'Banner',

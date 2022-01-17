@@ -4,6 +4,7 @@
     <Category @scrollToElement="scrollToElement"/>
     <BuyMedicineOnline/>
     <HotSale :data="ProductData"/>
+    <FeatureProduct :data="ProductData"/>
   </div>
 </template>
 
@@ -13,13 +14,15 @@ import Banner from '@/views/home_components/Banner'
 import BuyMedicineOnline from '@/views/home_components/BuyMedicineOnline'
 import Category from '@/views/home_components/Category_thumb'
 import HotSale from '@/views/home_components/HotSale'
-import { GetProduct } from '@/service/HomeService/home.service'
+import FeatureProduct from '@/views/home_components/FeatureProduct'
+import { GetProduct } from '@/service/home.service'
 export default {
   name: 'Home',
   components: {
     Banner,
     Category,
     BuyMedicineOnline,
+    FeatureProduct,
     HotSale
   },
   data () {
