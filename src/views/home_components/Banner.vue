@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="container banner-content">
-      <VueSlickCarousel v-bind="slickOptions">
+      <VueSlickCarousel v-if="data" v-bind="slickOptions">
         <div class="item" v-for="(item,index) in data" :key="index">
           <img :src="item.image.url" alt="">
         </div>
@@ -33,6 +33,7 @@
 
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
+import { GetBanner } from '@/service/HomeService/home.service'
 
 export default {
   name: 'Banner',
@@ -41,10 +42,10 @@ export default {
   },
   data () {
     return {
+      data: null,
       slickOptions: {
         dots: false,
         arrows: false,
-        focusOnSelect: true,
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -53,10 +54,16 @@ export default {
       }
     }
   },
-  props: {
-    data: {
-      typeof: Object,
-      default: () => {}
+  mounted () {
+    this.GetProduct()
+  },
+  methods: {
+    GetProduct () {
+      GetBanner().then(res => {
+        this.data = res.data
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
@@ -64,6 +71,8 @@ export default {
 
 <style lang="scss" scoped>
 .banner {
+  background-color: #FFFFFF;
+  padding: 15px 0;
   &-content {
     display: flex;
     align-items: flex-start;

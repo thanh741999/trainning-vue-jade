@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <div class="menu container">
     <div class="menu__item menu_bg-1" @click="scrollToElement('medicine')">
       <img src="@/assets/img/thuoc-2x.png" alt="iconmedicine">
       <p>Thuốc Không Kê Đơn</p>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Category_thumb',
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="online">
+  <div class="online container">
     <div class="online__header">
       <h4>Mua Thuốc Theo Toa Trực Tuyến</h4>
       <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or
@@ -37,7 +37,7 @@ export default {
 .online {
   padding: 17px 10px 38px 34px;
   background-color: #ffffff;
-
+  margin-bottom: 25px;
   &__header {
     h4 {
       color: #505050;

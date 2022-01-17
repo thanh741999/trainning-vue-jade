@@ -204,9 +204,9 @@ export default {
       const headerheight = this.$refs.header.clientHeight
       const headerwidth = this.$refs.header.clientWidth
       if (scrolltop >= headerheight && headerwidth >= 767) {
-        document.getElementsByClassName('header--scroll')[0].style.display = 'block'
+        document.getElementsByClassName('header--scroll')[0].classList.add('show')
       } else {
-        document.getElementsByClassName('header--scroll')[0].style.display = 'none'
+        document.getElementsByClassName('header--scroll')[0].classList.remove('show')
       }
     },
     ToggleSidebar () {
@@ -552,6 +552,9 @@ export default {
     width: 100%;
     z-index: 3;
     display: none;
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
     .header__middle {
       display: flex;
       align-items: center;
@@ -616,6 +619,9 @@ export default {
         }
       }
     }
+  }
+  &--scroll.show {
+    display: block;
   }
 }
 

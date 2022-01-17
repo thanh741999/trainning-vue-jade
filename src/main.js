@@ -8,6 +8,9 @@ import 'popper.js/dist/popper.min.js'
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 
+import '@/assets/scss/common.scss'
+import '@/assets/scss/reset.scss'
+
 Vue.config.productionTip = false
 
 new Vue({
