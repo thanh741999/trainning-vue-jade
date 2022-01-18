@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="product__content">
-      <VueSlickCarousel v-bind="slickOptions">
+      <VueSlickCarousel class="feature_product" v-if="FeatureProduct.length" v-bind="slickOptions">
         <div class="item" v-for="(item,index) in FeatureProduct" :key="index">
           <img :src="item.images[0].url" alt="">
         </div>
@@ -22,6 +22,7 @@
 
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
+import { GetFeatureProduct } from '@/service/home.service'
 
 export default {
   name: 'FeatureProduct',
@@ -65,17 +66,13 @@ export default {
       }
     }
   },
-  props: {
-    data: {
-      type: Array,
-      default: null
-    }
-  },
   created () {
-    this.data.forEach((item) => {
-      if (item.feature && this.FeatureProduct.length <= 7) {
-        this.FeatureProduct.push(item)
-      }
+    GetFeatureProduct().then(res => {
+      res.data.forEach((item) => {
+        if (item.feature && this.FeatureProduct.length <= 7) {
+          this.FeatureProduct.push(item)
+        }
+      })
     })
   }
 }
@@ -85,22 +82,31 @@ export default {
 .product {
   background-color: #ffffff;
   padding: 0;
+  margin-bottom: 25px;
   &__header {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 15px 20px;
     @media screen and (max-width: 768px) {
       padding: 15px;
+    }
+    @media screen and (max-width: 500px) {
+      padding: 15px 10px;
+    }
+    img {
+      @media screen and (max-width: 500px) {
+        height: 30px;
+      }
     }
     .header__title {
       display: flex;
       align-items: flex-start;
       flex-direction: column;
       margin-left: 10px;
-
       h4 {
         color: #505050;
         font-size: 22px;
+        font-weight: bold;
         @media screen and (max-width: 768px) {
           font-size: 18px;
         }
@@ -126,18 +132,21 @@ export default {
     display: flex;
     flex-wrap: wrap;
     position: relative;
-
+    padding-bottom: 50px;
+    @media screen and (max-width: 768px) {
+      padding-bottom: 30px;
+    }
     .slick-slider.slick-initialized {
       width: 70%;
       display: flex;
       flex-direction: column;
       @media screen and (max-width: 500px) {
-        width: 50%;
+        width: 60%;
       }
       .item {
         img {
           width: 100%;
-          height: 259px;
+          height: 290px;
           object-fit: contain;
           @media screen and (max-width: 768px) {
             height: 183px;
@@ -156,12 +165,15 @@ export default {
       width: 30%;
       padding-left: 10px;
       @media screen and (max-width: 500px) {
-        width: 50%;
+        width: 40%;
         padding-left: 0;
       }
 
       img {
         width: 100%;
+        @media screen and (max-width: 500px) {
+          width: 80%;
+        }
       }
     }
   }

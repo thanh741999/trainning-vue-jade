@@ -1,5 +1,5 @@
 <template>
-  <div class="hot container">
+  <div class="hot container" v-if="discountProduct">
     <div class="hot__header">
       <div class="header__title">
         <img src="@/assets/img/hot-icon-fire.png" alt="fire">
@@ -37,15 +37,19 @@ export default {
         slidesToShow: 3,
         slidesToScroll: 3,
         autoplay: true,
-        centerPadding: '25px',
         dotsClass: 'slick-dots custom-dot-class',
         autoplaySpeed: 2000,
         responsive: [
           {
+            breakpoint: 1025,
+            settings: {
+              centerPadding: '80px'
+            }
+          },
+          {
             breakpoint: 769,
             settings: {
               arrows: false,
-              centerPadding: '40px',
               slidesToShow: 2,
               slidesToScroll: 2
             }
@@ -88,11 +92,13 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 33.5px;
+    padding: 15px 20px;
     @media screen and (max-width: 768px) {
       padding: 15px;
     }
-
+    @media screen and (max-width: 500px) {
+      padding: 15px 10px;
+    }
     .header__title {
       display: flex;
       align-items: center;
@@ -143,15 +149,13 @@ export default {
   }
   .item {
     img {
-      width: 412px;
+      width: 100%;
       height: 299px;
       object-fit: contain;
       @media screen and (max-width: 768px) {
-        width: 360px;
         height: 261px;
       }
       @media screen and (max-width: 500px) {
-        width: 100%;
         height: 225px;
       }
     }

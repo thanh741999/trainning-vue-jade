@@ -1,5 +1,5 @@
 <template>
-  <div class="banner">
+  <div class="banner" v-if="data">
     <div class="container banner-content">
       <VueSlickCarousel v-if="data" v-bind="slickOptions">
         <div class="item" v-for="(item,index) in data" :key="index">
@@ -89,19 +89,16 @@ export default {
       .item {
         border-radius: 25px;
         img {
-          width: 850px;
+          width: 100%;
           height: 300px;
           object-fit: cover;
           @media screen and (max-width: 768px) {
-            width: 690px;
             height: 260px;
           }
           @media screen and (max-width: 500px) {
-            width: 400px;
             height: 158px;
           }
           @media screen and (max-width: 320px) {
-            width: 300px;
             height: 100px;
           }
         }
@@ -114,6 +111,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      text-align: center;
       @media screen and (max-width: 768px) {
         width: 100%;
       }

@@ -5,4 +5,26 @@
   .custom-dot-class {
     bottom: 0;
   }
+  ul {
+    li.slick-active {
+      button:before {
+        color: #36B88C;
+      }
+    }
+  }
+}
+
+//feature product
+.feature_product.slick-slider {
+  position: static;
+  ul {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

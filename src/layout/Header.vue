@@ -229,6 +229,7 @@ export default {
     width: 100%;
     z-index: 9;
     padding: 0;
+    margin-bottom: 0;
   }
   &-main {
     display: block;
@@ -452,12 +453,11 @@ export default {
   .nav__bar {
     position: fixed;
     top: 20%;
-    left: 0;
+    left: -50%;
     height: 80vh;
     overflow: scroll;
     padding: 15px 10px;
     background-color: #01ADAB;
-    width: 0;
     opacity: 0;
     transition: .3s linear;
     .bar__control {
@@ -472,6 +472,9 @@ export default {
         align-items: center;
         color: #FFFFFF;
         margin-bottom: 10px;
+        img {
+          width: 13%;
+        }
         button {
           border: none;
           background-color: unset;
@@ -502,8 +505,11 @@ export default {
         align-items: center;
         justify-content: flex-start;
         margin-bottom: 10px;
+        img {
+          width: 12%;
+        }
         a {
-          font-size: 13px;
+          font-size: 12px;
           margin-left: 10px;
           color: #FFFFFF;
           @media screen and (max-width: 375px) {
@@ -543,7 +549,7 @@ export default {
     }
   }
   .toggle-nav {
-    width: 50%;
+    left: 0;
     opacity: 1;
   }
   //header scroll

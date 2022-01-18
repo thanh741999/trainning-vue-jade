@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
 .online {
-  padding: 17px 10px 38px 34px;
+  padding: 17px 20px 38px;
   background-color: #ffffff;
   margin-bottom: 25px;
   &__header {
