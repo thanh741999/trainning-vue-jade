@@ -86,6 +86,7 @@ export default {
 
       p{
         font-size: 15px;
+        color: #777777;
         @media screen and (max-width: 768px) {
           font-size: 13px;
         }

@@ -10,7 +10,7 @@
         <chevron-right-icon size="1.5x" class="custom-class"></chevron-right-icon>
       </a>
     </div>
-    <VueSlickCarousel v-bind="slickOptions">
+    <VueSlickCarousel class="hot-sale" v-bind="slickOptions">
       <div class="item" v-for="(item,index) in discountProduct" :key="index">
         <img :src="item.images[0].url" alt="">
       </div>

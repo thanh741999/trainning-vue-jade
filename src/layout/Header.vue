@@ -25,7 +25,10 @@
         <h1 class="middle__logo"><a href="index.html"> <img src="@/assets/img/Logo.png" alt="logo"></a></h1>
         <form action="" class="middle__search">
           <input type="text" placeholder="Bạn đang tìm thuốc gì...">
-          <search-icon size="1.5x" class="custom-class"/>
+          <button class="btn-search">
+            <search-icon size="1.5x" class="custom-class"/>
+            <span>Tìm Kiếm</span>
+          </button>
         </form>
         <div class="middle__btn">
           <button class="btn__item">
@@ -265,6 +268,7 @@ export default {
       color: #FFFFFF;
       a.title {
         color: #FFFFFF;
+        font-weight: bold;
       }
       img {
         margin-right: 5px;
@@ -296,6 +300,7 @@ export default {
 
       .title {
         font-size: 13.2px;
+        font-weight: bold;
       }
     }
   }
@@ -320,12 +325,27 @@ export default {
         border-radius: 5px;
         border: none;
       }
-      .custom-class {
+      .btn-search {
+        background-color: #E2E3E4;
+        display: flex;
+        align-items: center;
         position: absolute;
-        right: 12px;
-        top: 5px;
-        color: gray;
-        cursor: pointer;
+        right: 0;
+        top: 0;
+        padding: 10px 8px 11px;
+        width: 100px;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+        span {
+          font-weight: bold;
+          color: #838383;
+          font-size: 13px;
+          margin-left: 5px;
+        }
+        svg {
+          font-size: 10px;
+          color: #838383;
+        }
       }
     }
     .middle__btn {
@@ -380,12 +400,14 @@ export default {
         @media screen and (max-width: 768px) {
           width: calc((100% / 3) - 20px);
           display: flex;
+          align-items: center;
           margin-bottom: 15px;
         }
         a {
           font-size: 13px;
           color: #FFFFFF;
           margin-left: 8px;
+          font-weight: bold;
         }
       }
     }

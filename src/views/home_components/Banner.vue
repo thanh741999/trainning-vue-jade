@@ -75,7 +75,7 @@ export default {
   padding: 15px 0;
   &-content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
 
@@ -92,6 +92,7 @@ export default {
           width: 100%;
           height: 300px;
           object-fit: cover;
+          border-radius: 25px;
           @media screen and (max-width: 768px) {
             height: 260px;
           }
@@ -129,6 +130,7 @@ export default {
         p {
           margin-bottom: 0;
           font-size: 15px;
+          color: #777777;
           @media screen and (max-width: 768px) {
             font-size: 13px;
           }
@@ -136,10 +138,7 @@ export default {
       ;
 
         img {
-          margin-bottom: 15px;
-          @media screen and (max-width: 768px) {
-            margin-bottom: 10px;
-          }
+          margin-bottom: 10px;
         }
       }
     }

@@ -29,7 +29,7 @@
           <div class="item__info">
             <p class="line-clamp-2">{{item.name}}</p>
             <span v-if="item.discount !== 'No'">{{DiscountPrice(item.discount,item.price)}}đ</span>
-            <span class="old-price">{{item.price}} đ</span>
+            <span :class="[item.discount !== 'No'? 'old-price':'']">{{item.price}} đ</span>
           </div>
         </div>
       </div>
@@ -141,6 +141,7 @@ export default {
 <style scoped lang="scss">
 .home {
   background: #EBEBEB;
+  padding-bottom: 40px;
   @media screen and (max-width: 500px) {
     padding-top: 115px;
   }
