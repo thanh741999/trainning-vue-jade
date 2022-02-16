@@ -2,6 +2,8 @@
   <div id="app">
     <Header/>
     <router-view/>
+    <Loading :loading="loading"/>
+    <Login :login="login" @closeModal="closeModal"/>
     <Footer/>
   </div>
 </template>
@@ -9,11 +11,64 @@
 <script>
 import Header from '@/layout/Header'
 import Footer from '@/layout/Footer'
+import Loading from '@/components/Loading'
+import Login from '@/views/Login'
 export default {
   name: 'app',
   components: {
     Header,
-    Footer
+    Footer,
+    Loading,
+    Login
+  },
+  data () {
+    return {
+      loading: false,
+      login: false
+    }
+  },
+  created () {
+    this.$store.watch(
+      (state) => {
+        return this.$store.getters['product/Loading']
+      },
+      (newValue, oldValue) => {
+        // something changed do something
+        this.loading = newValue
+        if (this.loading) {
+          document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+        } else {
+          document.getElementsByTagName('body')[0].style.overflow = 'unset'
+        }
+      },
+      // Optional Deep if you need it
+      {
+        deep: true
+      }
+    )
+    this.$store.watch(
+      (state) => {
+        return this.$store.getters['auth/Login']
+      },
+      (newValue, oldValue) => {
+        // something changed do something
+        this.login = newValue
+        if (this.loading) {
+          document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+        } else {
+          document.getElementsByTagName('body')[0].style.overflow = 'unset'
+        }
+      },
+      // Optional Deep if you need it
+      {
+        deep: true
+      }
+    )
+  },
+  methods: {
+    closeModal (e) {
+      this.$store.commit('auth/setLogin', e)
+    }
   }
 }
 </script>

@@ -33,16 +33,19 @@
 
 <script>
 import VueSlickCarousel from 'vue-slick-carousel'
-import { GetBanner } from '@/service/home.service'
 
 export default {
   name: 'Banner',
   components: {
     VueSlickCarousel
   },
+  props: {
+    data: {
+      type: Array
+    }
+  },
   data () {
     return {
-      data: null,
       slickOptions: {
         dots: false,
         arrows: false,
@@ -52,18 +55,6 @@ export default {
         autoplay: true,
         autoplaySpeed: 2000
       }
-    }
-  },
-  mounted () {
-    this.GetProduct()
-  },
-  methods: {
-    GetProduct () {
-      GetBanner().then(res => {
-        this.data = res.data
-      }).catch(error => {
-        console.log(error)
-      })
     }
   }
 }

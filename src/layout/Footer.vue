@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer" id="footer">
+  <footer class="footer">
     <div class="container footer__top">
       <div class="top__item">
         <img src="@/assets/img/percent2x.png" alt="percent">
@@ -90,7 +90,7 @@
 <script>
 import { ChevronRightIcon } from 'vue-feather-icons'
 export default {
-  name: 'footer',
+  name: 'Footer',
   components: {
     ChevronRightIcon
   }

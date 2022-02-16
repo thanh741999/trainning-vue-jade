@@ -16,7 +16,7 @@
         <div class="header__top__login header__top--group">
           <img src="@/assets/img/login2x.png" alt="login">
           <div class="text">
-            <button class="title" data-toggle="modal" data-target="#Modal-Login-Register">Đăng nhập</button>
+            <button class="title" @click="Login">Đăng nhập</button>
             <a href="">Tài khoản</a>
           </div>
         </div>
@@ -24,8 +24,8 @@
       <div class="container header__middle">
         <h1 class="middle__logo"><a href="index.html"> <img src="@/assets/img/Logo.png" alt="logo"></a></h1>
         <form action="" class="middle__search">
-          <input type="text" placeholder="Bạn đang tìm thuốc gì...">
-          <button class="btn-search">
+          <input v-model="SearchProduct" type="text" placeholder="Bạn đang tìm thuốc gì...">
+          <button type="button" class="btn-search" @click="setProductBySearch(SearchProduct); SearchProduct = ''">
             <search-icon size="1.5x" class="custom-class"/>
             <span>Tìm Kiếm</span>
           </button>
@@ -41,7 +41,7 @@
             <a href="cart.html">
               <img src="../assets/img/cart2x.png" alt="cart">
               <span>Giỏ hàng</span>
-              <span class="item__bard">69</span>
+              <span class="item__bard">{{cart.length}}</span>
             </a>
           </button>
         </div>
@@ -191,6 +191,7 @@
 
 <script>
 import { SearchIcon, AlignJustifyIcon, ChevronRightIcon } from 'vue-feather-icons'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: 'Header',
   components: {
@@ -198,10 +199,19 @@ export default {
     AlignJustifyIcon,
     ChevronRightIcon
   },
+  data () {
+    return {
+      SearchProduct: ''
+    }
+  },
   created () {
     window.addEventListener('scroll', this.handleScroll)
   },
+  computed: {
+    ...mapState('cart', ['cart'])
+  },
   methods: {
+    ...mapActions('product', ['setProductBySearch']),
     handleScroll (e) {
       const scrolltop = document.documentElement.scrollTop
       const headerheight = this.$refs.header.clientHeight
@@ -214,6 +224,9 @@ export default {
     },
     ToggleSidebar () {
       this.$refs.navbar.classList.toggle('toggle-nav')
+    },
+    Login () {
+      this.$store.commit('auth/setLogin', true)
     }
   }
 
@@ -225,7 +238,6 @@ export default {
 .header {
   background-color: #01ADAB;
   padding: 10px 0;
-  margin-bottom: 20px;
   @media screen and (max-width: 765px) {
     position: fixed;
     top: 0;

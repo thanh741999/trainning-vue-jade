@@ -7,7 +7,7 @@
       </div>
       <a class="header__more">
         Xem tất cả
-        <chevron-right-icon size="1.5x" class="custom-class"></chevron-right-icon>
+        <chevron-right-icon size="1.5x" class="custom-class"/>
       </a>
     </div>
     <VueSlickCarousel class="hot-sale" v-bind="slickOptions">

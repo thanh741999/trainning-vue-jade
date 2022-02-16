@@ -1,24 +1,29 @@
 import axios from 'axios'
+import store from '@/store'
 
 // create an axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_API_ENDPOINT,
-  // In case that in need token
-  headers: {
-    'Content-Type': 'application/json'
-  },
+  baseURL: 'https://phanolink.herokuapp.com/api',
   timeout: 30000 // request timeout
 })
 
 // request interceptor
 axiosInstance.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    console.log(config)
+    store.dispatch('product/setLoading', true)
+    return config
+  },
   (error) => Promise.reject(error)
 )
 
 // response interceptor
 axiosInstance.interceptors.response.use(
-  response => response,
+  response => {
+    console.log(response)
+    store.dispatch('product/setLoading', false)
+    return response
+  },
   error => Promise.reject(error)
 )
 
