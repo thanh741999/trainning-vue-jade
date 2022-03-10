@@ -2,41 +2,40 @@
   <div class="modal-login" v-if="login"  @click.self="closeModal(false)">
     <div class="modal-content">
       <div class="modal-header user__modal">
-        <button>
-          <h2 class="active">
+        <button :class="activeButton === 1 ? 'active' : ''" @click="changeStatus('login')">
+          <h2>
             ĐĂNG NHẬP
           </h2>
         </button>
-        <button>
+        <button :class="activeButton === 2 ? 'active' : ''" @click="changeStatus('register')">
           <h2>
             ĐĂNG KÝ
           </h2>
         </button>
       </div>
-      <div class="modal-main modal__login">
+      <div :class="activeButton === 1 ? 'show' : 'hidden'" class="modal-main modal__login">
         <p class="line__clamp">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
           euismod tincidunt ut
           laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
           ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum </p>
-        <form action="" class="main__form">
+        <form class="main__form" @submit.prevent="validationLogin">
           <div class="form__group">
             <label for="username">Email / SĐT</label>
-            <input type="text" id="username" placeholder="Nhập Email hoặc số điện thoại">
+            <input type="text" id="username" placeholder="Nhập Email hoặc số điện thoại" v-model="form.email">
           </div>
           <div class="form__group">
             <label for="password_login">Mật Khẩu</label>
-            <input type="text" id="password_login" placeholder="Mật khẩu từ 6 đến 32 ký tự">
+            <input type="password" id="password_login" placeholder="Mật khẩu từ 6 đến 32 ký tự" v-model="form.password">
           </div>
           <span>Quên mật khẩu? Nhấn vào <a href="#." data-dismiss="modal" data-toggle="modal"
                                            data-target="#Modal-password">đây</a> </span>
+          <div class="main__btn">
+            <button>Đăng nhập</button>
+          </div>
         </form>
-        <div class="main__btn">
-          <button>Đăng nhập</button>
-          <button class="btn--fb">Đăng nhập bằng Facebook</button>
-          <button class="btn--gg">Đăng nhập bằng Google</button>
-        </div>
+
       </div>
-      <div class="modal-main modal__register">
+      <div :class="activeButton === 2 ? 'show' : 'hidden'" class="modal-main modal__register">
         <p class="line__clamp">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh
           euismod tincidunt
           ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci
@@ -46,19 +45,23 @@
           <div class="form__group">
             <div class="group__name group__info">
               <label for="name">Họ tên</label>
-              <input type="text" id="name" placeholder="Nhập họ tên">
+              <input type="text" id="name" placeholder="Nhập họ tên" v-model="form_register.name">
             </div>
             <div class="group__mail group__info">
               <label for="mail">Email</label>
-              <input type="text" id="mail" placeholder="Nhập Email">
+              <input type="text" id="mail" placeholder="Nhập Email" v-model="form_register.email">
             </div>
             <div class="group__password group__info">
               <label for="password_register">Mật Khẩu</label>
-              <input type="text" id="password_register" placeholder="Mật khẩu từ 6 đến 32 ký tự">
+              <input type="password" id="password_register" placeholder="Mật khẩu từ 6 đến 32 ký tự" v-model="form_register.password">
+            </div>
+            <div class="group__password group__info">
+              <label for="confirm_password_register">re Mật Khẩu</label>
+              <input type="password" id="confirm_password_register" placeholder="Mật khẩu từ 6 đến 32 ký tự" v-model="form_register.password_confirmation">
             </div>
             <div class="group__phone group__info">
               <label for="phone_number">Số điện thoại</label>
-              <input type="text" id="phone_number" placeholder="Nhập số điện thoại">
+              <input type="text" id="phone_number" placeholder="Nhập số điện thoại" v-model="form_register.phone">
             </div>
           </div>
         </form>
@@ -66,10 +69,8 @@
           <div class="btn__checkbox">
             <input type="checkbox"> Nhận các thông tin và chương trình khuyến mãi qua email
           </div>
-          <button data-dismiss="modal" data-toggle="modal" data-target="#Modal-Register-successful">Đăng ký
+          <button @click="Register">Đăng ký
           </button>
-          <button class="btn--fb">Đăng ký bằng Facebook</button>
-          <button class="btn--gg">Đăng ký bằng Google</button>
           <span>Khi bạn nhấn Đăng ký, bạn đã đồng ý thực hiện mọi giao dịch mua bán theo điều kiện sử dụng và chính sách của <a
               href="">PHANOLINK</a> </span>
         </div>
@@ -79,17 +80,64 @@
 </template>
 
 <script>
+import {Register} from "@/service/auth.service";
+import {mapActions} from "vuex";
+
 export default {
-  name: 'Login',
+  name: 'LoginUser',
   props: {
     login: {
       type: Boolean,
       default: false
     }
   },
+  data () {
+    return {
+      form: {
+        email: 'change@gmail.com',
+        password: '1234567'
+      },
+      form_register: {
+        email: '',
+        password: '',
+        password_confirmation: '',
+        name: '',
+        phone: ''
+      },
+      activeButton: 1
+    }
+  },
   methods: {
+    ...mapActions('auth', ['UserLogin']),
     closeModal (params) {
       this.$emit('closeModal', params)
+    },
+    changeStatus (string) {
+      if (string === 'login') {
+        this.activeButton = 1
+      } else {
+        this.activeButton = 2
+      }
+    },
+    validationLogin () {
+      if (this.$store.getters["auth/Checkout"]) {
+        this.UserLogin(this.form).then(res => {
+          if (!res.response.data.success) {
+            this.$router.push({name: 'CheckoutError'})
+          } else {
+            this.$router.push({name: 'Checkout'})
+          }
+        })
+      } else {
+        this.UserLogin(this.form)
+      }
+      this.$store.dispatch('auth/setCheckout',false)
+      this.$store.dispatch('auth/setLogin',false)
+    },
+    Register () {
+      Register(this.form_register).then((res) => {
+        console.log(res)
+      })
     }
   }
 }
@@ -129,10 +177,15 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 15px 40px;
+      padding: 0 40px;
       button {
+        padding: 15px 20px;
         & + button {
           margin-left: 20px;
+        }
+        &.active {
+          background-color: #01ADAB;
+          color: #FFFFFF;
         }
         h2 {
           cursor: pointer;
@@ -285,8 +338,11 @@ export default {
       // ====== end ==========
     }
 
-    .modal__register {
+    .hidden {
       display: none;
+    }
+    .show {
+      display: block;
     }
   }
 }

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <Header/>
+    <Header :login="login"/>
+    <BreadCrumb/>
     <router-view/>
-    <Loading :loading="loading"/>
+    <Loading :loading="this.$store.state.loading"/>
     <Login :login="login" @closeModal="closeModal"/>
     <Footer/>
   </div>
@@ -13,44 +14,28 @@ import Header from '@/layout/Header'
 import Footer from '@/layout/Footer'
 import Loading from '@/components/Loading'
 import Login from '@/views/Login'
+import BreadCrumb from "@/layout/BreadCrumb";
 export default {
   name: 'app',
   components: {
     Header,
     Footer,
     Loading,
-    Login
+    Login,
+    BreadCrumb
   },
   data () {
     return {
-      loading: false,
       login: false
     }
   },
   created () {
     this.$store.watch(
-      (state) => {
-        return this.$store.getters['product/Loading']
+      () => {
+         return this.$store.getters['auth/Login']
+        // this.$store.getters['auth/Checkout']
       },
-      (newValue, oldValue) => {
-        // something changed do something
-        this.loading = newValue
-        if (this.loading) {
-          document.getElementsByTagName('body')[0].style.overflow = 'hidden'
-        } else {
-          document.getElementsByTagName('body')[0].style.overflow = 'unset'
-        }
-      },
-      // Optional Deep if you need it
-      {
-        deep: true
-      }
-    )
-    this.$store.watch(
-      (state) => {
-        return this.$store.getters['auth/Login']
-      },
-      (newValue, oldValue) => {
+      (newValue) => {
         // something changed do something
         this.login = newValue
         if (this.loading) {

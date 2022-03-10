@@ -11,6 +11,7 @@ import './ plugins/element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/scss/common.scss'
 import '@/assets/scss/reset.scss'
+import './ plugins/validation/index'
 
 Vue.config.productionTip = false
 

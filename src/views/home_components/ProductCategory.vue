@@ -5,7 +5,7 @@
         <img src="@/assets/img/thuoc-green2x.png" alt="thuoc">
         <span>{{ Category[0].category.name }}</span>
       </div>
-      <router-link class="header__more" to="#">
+      <router-link class="header__more" :to="{name: 'Product', params: {name: Category[0].category.name}}">
         Xem tất cả
         <chevron-right-icon size="1.5x" class="custom-class"></chevron-right-icon>
       </router-link>

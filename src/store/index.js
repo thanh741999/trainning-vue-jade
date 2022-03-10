@@ -25,12 +25,23 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state () {
     return {
-      loading: false
+      loading: false,
+      countRequest: 0
     }
   },
   mutations: {
     SET_LOADING (state, payload) {
-      state.loading = payload
+      if (payload) {
+        state.countRequest ++
+        state.loading = true
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+      } else {
+        state.countRequest--
+        if (state.countRequest === 0) {
+          state.loading = false
+          document.getElementsByTagName('body')[0].style.overflow = 'unset'
+        }
+      }
     }
   },
   modules,

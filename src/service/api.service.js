@@ -4,14 +4,19 @@ import store from '@/store'
 // create an axios instance
 const axiosInstance = axios.create({
   baseURL: 'https://phanolink.herokuapp.com/api',
-  timeout: 30000 // request timeout
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  timeout: 30000 // request timeout,
 })
 
 // request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log(config)
-    store.dispatch('product/setLoading', true)
+    store.commit('SET_LOADING',true)
+      if (localStorage.getItem('access_token')) {
+        config.headers.Authorization = 'Bearer ' + localStorage.getItem('access_token')
+      }
     return config
   },
   (error) => Promise.reject(error)
@@ -20,11 +25,13 @@ axiosInstance.interceptors.request.use(
 // response interceptor
 axiosInstance.interceptors.response.use(
   response => {
-    console.log(response)
-    store.dispatch('product/setLoading', false)
-    return response
+      store.commit('SET_LOADING',false)
+      return response
   },
-  error => Promise.reject(error)
+  error => {
+      store.commit('SET_LOADING',false)
+      return Promise.reject(error)
+  }
 )
 
 export const ApiService = {
@@ -43,5 +50,8 @@ export const ApiService = {
 
   delete (url, params = {}) {
     return axiosInstance.delete(url, params)
-  }
+  },
+  patch (url, body, params = {}) {
+      return axiosInstance.patch(`${url}`, body, { params })
+  },
 }

@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Product from '@/views/Product'
-import { Auth } from '@/router/guards/Auth'
+import {Auth} from "@/router/guards/Auth"
+import UserInfo from "@/views/UserInfo";
 
 Vue.use(VueRouter)
 
@@ -10,26 +11,58 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      BreadCrumb: [
+        {name: 'Home', title: 'Trang chủ'},
+      ]
+    }
   },
   {
-    path: '/product',
+    path: '/product/:Category',
     name: 'Product',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: Product
+    component: Product,
+    meta: {
+      BreadCrumb: [
+        {name: 'Home', title: 'Trang chủ'},
+      ]
+    }
   },
   {
     path: '/product/:id',
     name: 'ProductDetail',
-    component: () => import('@/views/ProductDetail')
+    component: () => import('@/views/ProductDetail'),
+    meta: {
+      BreadCrumb: [
+        {name: 'Home', title: 'Trang chủ'},
+      ]
+    }
   },
   {
     path: '/cart',
     name: 'Cart',
     component: () => import('@/views/Cart'),
-    beforeEnter: [Auth]
+  },
+  {
+    path: '/userinfo',
+    name: 'UserInfo',
+    component: UserInfo
+  },
+  {
+    path: '/checkout/:id',
+    name: 'Checkout',
+    component: () => import('@/views/Checkout'),
+    beforeEnter: (to, from, next) => {
+      Auth(to, from, next)
+    }
+  },
+  {
+    path: '/checkout',
+    name: 'CheckoutError',
+    component: () => import('@/views/CheckoutError')
   }
 ]
 

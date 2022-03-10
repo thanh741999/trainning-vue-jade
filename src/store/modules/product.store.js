@@ -2,9 +2,7 @@ import { GetProduct, GetProductList, SortProduct, GetProductPaginationSort, GetP
 const state = {
   pagination: null,
   product: null,
-  BreadCrumb: 1,
   activeSort: null,
-  loading: false
 }
 
 const actions = {
@@ -14,6 +12,7 @@ const actions = {
   setProduct (context, payload = {}) {
     return GetProductList(payload.id).then(res => {
       if (res.data) {
+
         context.commit('setProduct', res.data)
         context.commit('setPagination', res.pagination)
       }
@@ -32,7 +31,6 @@ const actions = {
   },
   setProductBySideBar (context, payload) {
     context.commit('setActiveSort', null)
-    context.commit('setBreadCrumb', payload.id)
     return GetProduct(payload.id).then(res => {
       if (res.data) {
         context.commit('setProduct', res.data)
@@ -50,14 +48,11 @@ const actions = {
   setProductBySearch (context, payload) {
     return GetProductSearch(payload).then(res => {
       if (res.data) {
-        context.commit('setBreadCrumb', res.data[0].category.id)
         context.commit('setProduct', res.data)
         context.commit('setPagination', res.pagination)
       }
+      return res
     })
-  },
-  setLoading (context, payload) {
-    context.commit('setLoading', payload)
   }
 }
 
@@ -68,18 +63,11 @@ const mutations = {
   setProduct (state, data) {
     state.product = data
   },
-  setBreadCrumb (state, data) {
-    state.BreadCrumb = data
-  },
   setActiveSort (state, data) {
     state.activeSort = data
-  },
-  setLoading (state, data) {
-    state.loading = data
   }
 }
 const getters = {
-  Loading: state => state.loading,
   BreadCrumb: state => state.BreadCrumb
 }
 export default {

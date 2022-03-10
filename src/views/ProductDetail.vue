@@ -35,12 +35,12 @@
                 <input type="text" v-model="product.quantity">
                 <button class="plus" @click="changeQuantity(1)"><plus-icon size="1.5x" class="custom-class plus"/></button>
               </div>
-              <button class="buy__btn" @click="setCart(product)">
+              <button class="buy__btn" @click="addToCart">
                 <img src="../assets/img/cart2x.png" alt="cart">
                 CHỌN MUA
               </button>
-              <button class="buy__like">
-                <img src="../assets/img/cart2x.png" alt="heart">
+              <button v-if="productLike" ref="like" :id="displayLike !== -1 ? 1 : 0 " :class="displayLike !== -1 ? 'active' : ''" class="buy__like" @click="addLike(productDetail.id)">
+                <heart-icon size="1.5x" class="custom-class"></heart-icon>
               </button>
             </div>
           </div>
@@ -85,18 +85,20 @@
 <script>
 import store from '@/store'
 import { mapState, mapActions } from 'vuex'
-import { MinusIcon, PlusIcon } from 'vue-feather-icons'
+import { MinusIcon, PlusIcon, HeartIcon } from 'vue-feather-icons'
 export default {
   name: 'ProductDetail',
   components: {
     MinusIcon,
-    PlusIcon
+    PlusIcon,
+    HeartIcon
   },
   data () {
     return {
       product: {
         quantity: 1
-      }
+      },
+      cart: []
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -104,17 +106,74 @@ export default {
       id: to.params.id
     }
     store.dispatch('productdetail/setProductDetail', data).then(_ => next())
+    if (localStorage.getItem('access_token')) {
+        const data = {
+          product: 'product.images'
+        }
+        store.dispatch('productdetail/getProductLike',data)
+    }
   },
   computed: {
-    ...mapState('productdetail', ['productDetail'])
+    ...mapState('productdetail', ['productDetail', ['productLike']]),
+    displayLike() {
+      if (this.productLike) {
+        const index = this.productLike.findIndex((item) => {
+          if (item.product.id === this.productDetail.id) {
+            return true
+          }
+        })
+        return index
+      }
+    }
   },
   methods: {
-    ...mapActions('cart', ['setCart']),
+    ...mapActions('productdetail',['setProductLike']),
     changeQuantity (number) {
-      this.product.quantity = this.product.quantity + number
-      this.product = { ...this.productDetail, ...this.product }
-      console.log(this.product.quantity)
-    }
+      this.product.quantity = this.product.quantity +number
+    },
+    addToCart() {
+      this.product = { ...this.productDetail, ...this.product}
+
+      if (localStorage.getItem('access_token')) {
+        if (typeof localStorage.getItem('cart') === 'object') {
+          localStorage.setItem('cart',JSON.stringify([this.product]))
+          store.dispatch('cart/setTotalQuantity',this.product.quantity)
+        } else {
+          this.cart = eval(localStorage.getItem('cart'))
+          store.commit('cart/setTotalQuantity',this.product.quantity)
+          let product_index = this.cart.findIndex(item => {
+            return item.id === this.product.id
+          })
+          if (product_index !== -1) {
+            this.cart[product_index].quantity += this.product.quantity
+          } else this.cart.push(this.product)
+
+          localStorage.setItem('cart',JSON.stringify(this.cart))
+        }
+      } else {
+        store.commit('auth/setLogin',true)
+      }
+    },
+    addLike (id) {
+      const data = {
+        product_id: id,
+        product: 'product.images'
+      }
+      const isLike = this.$refs.like.getAttribute('id')
+      if (localStorage.getItem('access_token')) {
+        if (isLike === '1') {
+          store.dispatch('productdetail/setDeleteProductLike',data).then(_ => {
+            this.$refs.like.setAttribute('id','0')
+          })
+        } else {
+          store.dispatch('productdetail/setProductLike',data).then(_ => {
+            this.$refs.like.setAttribute('id','1')
+          })
+        }
+      } else {
+        store.dispatch('auth/setLogin',true)
+      }
+    },
   }
 }
 </script>
@@ -363,6 +422,12 @@ export default {
           width: 47px;
           background-color: #505050;
           margin-left: 13px;
+          svg {
+            color: #FFFFFF;
+          }
+          &.active {
+            background-color: #EA4036;
+          }
         }
       }
     }

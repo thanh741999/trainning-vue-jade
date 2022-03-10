@@ -16,16 +16,17 @@
         <div class="header__top__login header__top--group">
           <img src="@/assets/img/login2x.png" alt="login">
           <div class="text">
-            <button class="title" @click="Login">Đăng nhập</button>
+            <button class="title" @click="Login" v-if="!userInfo">Đăng nhập  </button>
+            <router-link tag="button" to="/userinfo" v-else>{{userInfo.name}}</router-link>
             <a href="">Tài khoản</a>
           </div>
         </div>
       </div>
       <div class="container header__middle">
-        <h1 class="middle__logo"><a href="index.html"> <img src="@/assets/img/Logo.png" alt="logo"></a></h1>
+        <h1 class="middle__logo"><router-link to="/"> <img src="@/assets/img/Logo.png" alt="logo"></router-link></h1>
         <form action="" class="middle__search">
-          <input v-model="SearchProduct" type="text" placeholder="Bạn đang tìm thuốc gì...">
-          <button type="button" class="btn-search" @click="setProductBySearch(SearchProduct); SearchProduct = ''">
+          <input v-model="searchProduct" type="text" placeholder="Bạn đang tìm thuốc gì...">
+          <button type="button" class="btn-search" @click="SearchProduct">
             <search-icon size="1.5x" class="custom-class"/>
             <span>Tìm Kiếm</span>
           </button>
@@ -38,11 +39,11 @@
             </a>
           </button>
           <button class="btn__item">
-            <a href="cart.html">
+            <router-link to="/cart">
               <img src="../assets/img/cart2x.png" alt="cart">
               <span>Giỏ hàng</span>
-              <span class="item__bard">{{cart.length}}</span>
-            </a>
+              <span class="item__bard">{{totalQuantity}}</span>
+            </router-link>
           </button>
         </div>
       </div>
@@ -78,10 +79,13 @@
     <!-- ======header scrolll======= -->
     <div class="header--scroll">
       <div class="header__middle container">
-        <h1 class="middle__logo"><a href="index.html"> <img src="@/assets/img/Logo.png" alt="logo"></a></h1>
+        <h1 class="middle__logo"><router-link to="/"> <img src="@/assets/img/Logo.png" alt="logo"></router-link></h1>
         <form action="" class="middle__search">
-          <input type="text" placeholder="Bạn đang tìm thuốc gì...">
-          <search-icon size="1.5x" class="custom-class"/>
+          <input v-model="searchProduct" type="text" placeholder="Bạn đang tìm thuốc gì...">
+          <button type="button" class="btn-search" @click="SearchProduct">
+            <search-icon size="1.5x" class="custom-class"/>
+            <span>Tìm Kiếm</span>
+          </button>
         </form>
         <div class="middle__btn">
           <button class="btn__item">
@@ -89,11 +93,11 @@
               <span>Tạo toa thuốc</span></a>
           </button>
           <button class="btn__item">
-            <a href="cart.html">
+            <router-link to="/cart">
               <img src="@/assets/img/cart2x.png" alt="cart">
               <span>Giỏ hàng</span>
-              <span class="item__bard">69</span>
-            </a>
+              <span class="item__bard">{{totalQuantity}}</span>
+            </router-link>
           </button>
         </div>
       </div>
@@ -192,8 +196,10 @@
 <script>
 import { SearchIcon, AlignJustifyIcon, ChevronRightIcon } from 'vue-feather-icons'
 import { mapActions, mapState } from 'vuex'
+import {GetUserInfo} from "@/service/auth.service";
+import store from '@/store'
 export default {
-  name: 'Header',
+  name: "HeaderPhano",
   components: {
     SearchIcon,
     AlignJustifyIcon,
@@ -201,18 +207,35 @@ export default {
   },
   data () {
     return {
-      SearchProduct: ''
+      searchProduct: ''
+    }
+  },
+  props: {
+    login: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
     window.addEventListener('scroll', this.handleScroll)
   },
+  beforeMount() {
+    if (localStorage.getItem('access_token')) {
+      GetUserInfo().then((res) => {
+        store.commit('auth/setUserInfo',res.data)
+      })
+    }
+    if (localStorage.getItem('cart')) {
+      store.commit('cart/setTotalQuantity',JSON.parse(localStorage.getItem('cart')))
+    }
+  },
   computed: {
-    ...mapState('cart', ['cart'])
+    ...mapState('cart', ['totalQuantity']),
+    ...mapState('auth', ['userInfo'])
   },
   methods: {
     ...mapActions('product', ['setProductBySearch']),
-    handleScroll (e) {
+    handleScroll () {
       const scrolltop = document.documentElement.scrollTop
       const headerheight = this.$refs.header.clientHeight
       const headerwidth = this.$refs.header.clientWidth
@@ -227,6 +250,12 @@ export default {
     },
     Login () {
       this.$store.commit('auth/setLogin', true)
+    },
+    SearchProduct () {
+      this.setProductBySearch(this.searchProduct).then(res => {
+        if (res.success)
+        this.$router.push({name: 'Product', params: {name: res.data[0].category.name,id: res.data[0].category.id}})
+      })
     }
   }
 
@@ -620,9 +649,6 @@ export default {
           border: none;
         }
         .custom-class {
-          position: absolute;
-          right: 12px;
-          top: 5px;
           color: gray;
           cursor: pointer;
         }

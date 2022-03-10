@@ -1,8 +1,11 @@
 import store from '@/store'
 
 export const Auth = (to, from, next) => {
-  if (!store.state.auth.accessToken) {
-    return store.commit('auth/setToken', '')
+  if (localStorage.getItem('access_token')) {
+    return next()
+  } else {
+    next({name: 'Cart'})
+    store.commit('auth/setLogin',true)
   }
-  next()
 }
+

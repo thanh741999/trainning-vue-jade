@@ -1,15 +1,40 @@
-import { GetProductDetail } from '@/service/productDetail.service'
+import {AddProductLike, DeleteProductLike, GetProductDetail, GetProductLike} from '@/service/productDetail.service'
 
 const state = {
-  productDetail: null
+  productDetail: null,
+  productLike: null
 }
 
 const actions = {
   setProductDetail (context, payload = {}) {
-    console.log(payload)
     return GetProductDetail(payload.id).then(res => {
-      console.log(res)
       context.commit('setProductDetail', res.data)
+    })
+  },
+  setProductLike (context, payload) {
+    return AddProductLike(payload).then(res => {
+      if (res.success) {
+        return GetProductLike(payload).then(res => {
+          context.commit('setProductLike',res.data.data)
+        })
+      }
+    }).catch(error => {
+      console.log({error})
+    })
+  },
+  getProductLike (context, payload) {
+    return GetProductLike(payload).then(res => {
+      context.commit('setProductLike', res.data.data)
+    })
+  },
+  setDeleteProductLike (context, payload) {
+    return DeleteProductLike(payload.product_id).then(res => {
+      if (res.success) {
+        return GetProductLike(payload).then(res => {
+          context.commit('setProductLike',res.data.data)
+        })
+      }
+      return res.data
     })
   }
 }
@@ -17,6 +42,9 @@ const actions = {
 const mutations = {
   setProductDetail (state, data) {
     state.productDetail = data
+  },
+  setProductLike(state, data) {
+    state.productLike = data
   }
 }
 

@@ -1,20 +1,11 @@
-<template>
+  <template>
   <div class="product">
-    <div class="product-breadcrumb container">
-      <ul>
-        <li>Trang chủ</li>
-        <li>
-          <chevron-right-icon size="1.5x" class="custom-class"/>
-          {{displayBreadCrumb}}
-        </li>
-      </ul>
-    </div>
     <div class="product-content container">
       <div class="sidebar" v-if="sidebar">
         <div class="sidebar-filter sidebar-bg">
           <h2>Danh Mục Sản Phẩm</h2>
           <ul>
-            <li @click="setProductBySideBar(item)" :class="[SidebarActive === item.id ? 'active': '']" v-for="(item,index) in sidebar" :key="index">
+            <li @click="setProductBySideBar(item)" :class="[SidebarActive == item.id ? 'active': '']" v-for="(item,index) in sidebar" :key="index">
               <chevron-right-icon size="1.5x"/>{{item.name}}
             </li>
           </ul>
@@ -86,6 +77,8 @@ import {
   GetCategory
 } from '@/service/product.service'
 import { mapState, mapActions } from 'vuex'
+import {DisplayNameToId} from "@/ plugins/common/convert";
+
 export default {
   name: 'Product',
   components: {
@@ -96,7 +89,7 @@ export default {
   data () {
     return {
       SidebarRandomProductId: [],
-      SidebarActive: 1,
+      SidebarActive: null,
       disable: false,
       slickOptions: {
         dots: false,
@@ -117,7 +110,7 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
     const data = {
-      id: 1
+      id: DisplayNameToId(to.params.name)
     }
     store.dispatch('product/setProduct', data).then(_ =>
       GetCategory().then((res) => {
@@ -132,22 +125,12 @@ export default {
   },
   computed: {
     ...mapState('sidebar', ['sidebar']),
-    ...mapState('product', ['pagination', 'product', 'BreadCrumb', 'loading', 'activeSort']),
+    ...mapState('product', ['pagination', 'product', 'activeSort']),
     ...mapState('banner', ['banner']),
-    displayBreadCrumb () {
-      if (this.BreadCrumb === 1) {
-        return 'Thuốc không kê toa'
-      } else if (this.BreadCrumb === 2) {
-        return 'Thực phẩm chức năng'
-      } else if (this.BreadCrumb === 3) {
-        return 'Dụng cụ y khoa'
-      } else if (this.BreadCrumb === 4) {
-        return 'Mỹ phẩm'
-      } else return 'Mẹ & bé'
-    }
   },
   created () {
     this.RandomSaleProduct()
+    this.SidebarActive = this.$route.params.id
     store.watch(
       (state) => {
         return store.getters['product/BreadCrumb']
@@ -204,30 +187,6 @@ export default {
   @media screen and (max-width: 500px) {
     padding-top: 130px;
   }
-  &-breadcrumb {
-    margin-bottom: 15px;
-
-    ul {
-      display: flex;
-
-      li {
-        margin-right: 12px;
-        color: #808081;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-
-        &:last-child {
-          color: #505050;
-        }
-
-        i {
-          margin-right: 10px;
-        }
-      }
-    }
-  }
-
   &-content {
     display: flex;
     justify-content: space-between;
